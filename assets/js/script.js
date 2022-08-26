@@ -92,7 +92,7 @@ async function getStatus(e) {
 
 function displayStatus(data) {
     document.getElementById('resultsModalTitle').innerText = 'API Key Status'
-    document.getElementById('results-content').innerHTML = `Your key is valid until: <strong><span class="key-status">${data.expiry}</span></strong>`;
+    document.getElementById('results-content').innerHTML = `<div>Your key is valid until: <strong><span class="key-status">${data.expiry}</span></strong></div>`;
 
     resultsModal.show();
 }
