@@ -5,6 +5,20 @@ const resultsModal = new bootstrap.Modal(document.getElementById('resultsModal')
 document.getElementById('status').addEventListener('click', e => getStatus(e));
 document.getElementById('submit').addEventListener('click', e => postForm(e));
 
+function displayException(data) {
+    let heading = `An exception occurred`;
+
+    results = `<div>The API returned status code ${data.status_code}</div>`;
+    results += `<div>Error number: <strong>${data.error_no}</strong></div>`;
+    results += `<div>Error text: <strong>${data.error}</strong></div>`;
+
+    document.getElementById('resultsModalTitle').innerText = heading;
+    document.getElementById('results-content').innerHTML = results;
+    
+    resultsModal.show();
+}
+
+
 function processOptions(form) {
     let optArray = [];
 
@@ -36,6 +50,7 @@ async function postForm(e) {
         if (response.ok) {
             displayErrors(data);
         } else {
+            displayException(data);
             throw new Error(data.error);
         }
 }
@@ -56,6 +71,7 @@ function displayErrors(data) {
 
     document.getElementById('resultsModalTitle').innerText = heading;
     document.getElementById('results-content').innerHTML = results;
+
     resultsModal.show();
 }
 
@@ -69,13 +85,14 @@ async function getStatus(e) {
     if (response.ok) {
         displayStatus(data);
     } else {
+        displayException(data);
         throw new Error(data.error);
     }
 }
 
 function displayStatus(data) {
     document.getElementById('resultsModalTitle').innerText = 'API Key Status'
-    document.getElementById('results-content').innerHTML = `Your key is valid until: <span class="key-status">${data.expiry}</span>`;
+    document.getElementById('results-content').innerHTML = `Your key is valid until: <strong><span class="key-status">${data.expiry}</span></strong>`;
 
     resultsModal.show();
 }
